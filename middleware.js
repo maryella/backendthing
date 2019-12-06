@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
-//change secret
-const secret = "secret";
+//changesecret
 
+const secret = "secret";
 const withAuth = function(req, res, next) {
   const token = req.cookies.token;
-  console.log("token", req.cookies);
+  console.log("cookies", req.cookies);
   if (!token) {
     res.status(401).send("Unauthorized: No token provided");
   } else {
@@ -18,5 +18,4 @@ const withAuth = function(req, res, next) {
     });
   }
 };
-
 module.exports = withAuth;

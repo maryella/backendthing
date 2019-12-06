@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get("/", function(req, res, next) {
-  res.render("index", { title: "Express" });
+  res.send("Hello World, this is the main route").status(200);
 });
 
 const withAuth = require("../middleware");
