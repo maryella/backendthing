@@ -5,6 +5,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
+const helmet = require("helmet");
 const FileStore = require("session-file-store")(session);
 const es6Renderer = require("express-es6-template-engine"); //for testing
 const cors = require("cors");
@@ -19,7 +20,13 @@ const app = express();
 // app.engine("html", es6Renderer);
 // app.set("views", "./views");
 // app.set("view engine", "html");
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true
+  })
+);
+app.use(helmet());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

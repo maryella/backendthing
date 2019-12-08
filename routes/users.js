@@ -35,7 +35,7 @@ router.post("/login", async (req, res, next) => {
       expiresIn: "1h"
     });
     console.log("log in successful ");
-    res.cookie("token", token, { httpOnly: true }).sendStatus(200);
+    res.cookie("token", token, { httpOnly: false }).sendStatus(200);
   } else {
     res.sendStatus(401);
   }
