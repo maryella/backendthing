@@ -17,6 +17,7 @@ class User {
       const isValid = this.checkPassword(response.password);
       if (!!isValid) {
         const { id, name } = response;
+        console.log("user model login id", id);
         return { isValid, id, name };
       } else {
         return { isValid };
@@ -29,11 +30,26 @@ class User {
   async saveNewUser() {
     try {
       console.log("save new user");
-      const response = db.one(
+      const response = await db.one(
         `INSERT INTO users (name, email, password) VALUES ($1,$2,$3) RETURNING id;`,
         [this.name, this.email, this.password]
       );
-      return response;
+
+      if (!response.id) {
+        return "Email address already has account";
+      }
+      await db.none(
+        `CREATE TABLE medlist_id${response.id} (
+              classname VARCHAR(50),
+              drugname VARCHAR(50),
+              strength INTEGER,
+              quantity INTEGER,
+              frequency VARCHAR,
+              time VARCHAR,
+              comments VARCHAR
+          );`
+      );
+      return "success";
     } catch (error) {
       return error.message;
     }

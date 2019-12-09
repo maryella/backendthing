@@ -1,4 +1,3 @@
-//fix secret
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const path = require("path");
@@ -14,27 +13,40 @@ require("dotenv").config();
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-var apiRouter = require("./routes/posts");
+var medRouter = require("./routes/meds");
 
 const app = express();
-// app.engine("html", es6Renderer);
-// app.set("views", "./views");
-// app.set("view engine", "html");
-app.use(
-  cors({
-    origin: true,
-    credentials: true
-  })
-);
+
+var whitelist = [process.env.WHITE_LIST];
+var corsOptions = {
+  origin: function(origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(helmet());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  session({
+    store: new FileStore(),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true
+  })
+);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/api", apiRouter);
+app.use("/meds", medRouter);
 
 module.exports = app;

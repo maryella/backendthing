@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userModel = require("../models/userModel");
 const bcrypt = require("bcryptjs");
-//fix this secret later for security
-const secret = "secret";
+const secret = process.env.JWT_SECRET;
 const jwt = require("jsonwebtoken");
 const withAuth = require("../middleware");
 
@@ -28,26 +27,28 @@ router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   const user = new userModel(null, email, password);
   const response = await user.login();
+  const user_id = response.id;
 
   if (!!response.isValid) {
-    const payload = { email };
+    const payload = { user_id };
     const token = jwt.sign(payload, secret, {
       expiresIn: "1h"
     });
-    console.log("log in successful ");
-    res.cookie("token", token, { httpOnly: false }).sendStatus(200);
+
+    res.cookie("token", token, { httpOnly: true }).sendStatus(200);
   } else {
     res.sendStatus(401);
   }
 });
 
 router.get("/secret", withAuth, async function(req, res, next) {
+  console.log("req id:", req.user_id);
   res.send("The password is potato");
 });
 
-router.get("/logout", (req, res, next) => {
-  req.session.destroy();
-  res.status(200).redirect("/");
+router.get("/logout", (req, res) => {
+  res.clearCookie("token", { httpOnly: true });
+  return res.status(200);
 });
 
 module.exports = router;

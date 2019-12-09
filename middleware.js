@@ -1,7 +1,5 @@
 const jwt = require("jsonwebtoken");
-//changesecret
-
-const secret = "secret";
+const secret = process.env.JWT_SECRET;
 const withAuth = function(req, res, next) {
   const token = req.cookies.token;
   console.log("cookies", token);
@@ -12,7 +10,7 @@ const withAuth = function(req, res, next) {
       if (err) {
         res.status(401).send("Unauthorized: Invalid token");
       } else {
-        req.email = decoded.email;
+        req.user_id = decoded.user_id;
         next();
       }
     });
