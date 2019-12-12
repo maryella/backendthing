@@ -42,8 +42,8 @@ class User {
         `CREATE TABLE medlist_id${response.id} (
               classname VARCHAR(50),
               drugname VARCHAR(50),
-              strength INTEGER,
-              quantity INTEGER,
+              strength VARCHAR,
+              quantity VARCHAR,
               frequency VARCHAR,
               time VARCHAR,
               comments VARCHAR

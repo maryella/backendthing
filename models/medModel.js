@@ -8,7 +8,7 @@ class MedList {
     strength,
     quantity,
     frequency,
-    time,
+    timing,
     comments
   ) {
     this.user_id = user_id;
@@ -17,28 +17,28 @@ class MedList {
     this.strength = strength;
     this.quantity = quantity;
     this.frequency = frequency;
-    this.time = time;
+    this.timing = timing;
     this.comments = comments;
   }
 
-  async addMed() {
+  async addMed(id) {
     try {
+      const user_id = id;
+      console.log("add med userid", user_id);
       const response = db.none(
-        `INSERT INTO medlist_id${user_id} (user_id, classname, drugname, strength, quantity, frequency, time, comments) 
-                                        VALUES ($1, $2, $3, $4, $5, $6, $7) 
-                                        RETURNING id;`,
+        `INSERT INTO medlist_id${id} (classname, drugname, strength, quantity, frequency, time, comments)
+                                        VALUES ($1, $2, $3, $4, $5, $6, $7);`,
         [
-          this.user_id,
           this.classname,
           this.drugname,
           this.strength,
           this.quantity,
           this.frequency,
-          this.time,
+          this.timing,
           this.comments
         ]
       );
-      return response;
+      return "success";
     } catch (error) {
       return error.message;
     }

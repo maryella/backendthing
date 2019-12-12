@@ -5,7 +5,7 @@ const withAuth = require("../middleware");
 
 router.get("/", withAuth, async function(req, res, next) {
   const user_id = req.user_id;
-  console.log("route user id", user_id);
+  console.log("get route user id", user_id);
   const all = await medModel.getAllMeds(user_id);
   res.json(all);
 });
@@ -28,30 +28,34 @@ router.get("/", withAuth, async function(req, res, next) {
 //   });
 // });
 
-router.post("/addmed", async (req, res) => {
+router.post("/addmed", withAuth, async (req, res) => {
+  const user_id = req.user_id;
+  console.log("post route user id", user_id);
   const {
     classname,
     drugname,
     strength,
     quantity,
     frequency,
-    time,
+    timing,
     comments
   } = req.body;
+
   const new_med = new medModel(
+    user_id,
     classname,
     drugname,
     strength,
     quantity,
     frequency,
-    time,
+    timing,
     comments
   );
-  const addPost = await new_post.addNewPost();
+  const addedMed = await new_med.addMed(user_id);
 
-  if (addPost) {
-    console.log("added");
-    res.status(200);
+  if (addedMed) {
+    console.log("added med");
+    res.sendStatus(200);
   } else {
     res.sendStatus(500);
   }
