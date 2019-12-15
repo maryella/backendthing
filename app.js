@@ -14,7 +14,7 @@ require("dotenv").config();
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var medRouter = require("./routes/meds");
-
+var verifyRouter = require("./routes/logincheck");
 const app = express();
 
 var whitelist = [process.env.WHITE_LIST];
@@ -48,5 +48,6 @@ app.use(
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/meds", medRouter);
+app.use("/verify", verifyRouter);
 
 module.exports = app;

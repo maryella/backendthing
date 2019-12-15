@@ -10,24 +10,6 @@ router.get("/", withAuth, async function(req, res, next) {
   res.json(all);
 });
 
-// router.get("/:post_id", async (req, res, next) => {
-//   const { post_id } = req.params;
-//   //    console.log("req param:", req.params)
-//   const post = await PostModel.getPostById(post_id);
-//   res.json(post);
-// });
-
-// router.get("/addpost", async (req, res, next) => {
-//   res.render("template", {
-//     locals: {
-//       title: "Add Post"
-//     },
-//     partials: {
-//       partial: "partial-addpost"
-//     }
-//   });
-// });
-
 router.post("/addmed", withAuth, async (req, res) => {
   const user_id = req.user_id;
   console.log("post route user id", user_id);
@@ -38,7 +20,8 @@ router.post("/addmed", withAuth, async (req, res) => {
     quantity,
     frequency,
     timing,
-    comments
+    comments,
+    formulation
   } = req.body;
 
   const new_med = new medModel(
@@ -49,12 +32,48 @@ router.post("/addmed", withAuth, async (req, res) => {
     quantity,
     frequency,
     timing,
-    comments
+    comments,
+    formulation
   );
   const addedMed = await new_med.addMed(user_id);
 
   if (addedMed) {
     console.log("added med");
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(500);
+  }
+});
+
+router.post("/updatemed", withAuth, async (req, res) => {
+  const user_id = req.user_id;
+  console.log("post route user id", user_id);
+  const {
+    classname,
+    drugname,
+    strength,
+    quantity,
+    frequency,
+    timing,
+    comments,
+    formulation
+  } = req.body;
+
+  const new_med = new medModel(
+    user_id,
+    classname,
+    drugname,
+    strength,
+    quantity,
+    frequency,
+    timing,
+    comments,
+    formulation
+  );
+  const updatedMed = await new_med.updateMed(user_id);
+
+  if (updatedMed) {
+    console.log("updated med");
     res.sendStatus(200);
   } else {
     res.sendStatus(500);

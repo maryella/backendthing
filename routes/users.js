@@ -47,8 +47,8 @@ router.get("/secret", withAuth, async function(req, res, next) {
 });
 
 router.get("/logout", (req, res) => {
-  res.clearCookie("token", { httpOnly: true });
-  return res.status(200);
+  res.clearCookie("token");
+  res.sendStatus(200);
 });
 
 module.exports = router;

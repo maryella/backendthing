@@ -9,7 +9,8 @@ class MedList {
     quantity,
     frequency,
     timing,
-    comments
+    comments,
+    formulation
   ) {
     this.user_id = user_id;
     this.classname = classname;
@@ -19,15 +20,15 @@ class MedList {
     this.frequency = frequency;
     this.timing = timing;
     this.comments = comments;
+    this.formulation = formulation;
   }
 
   async addMed(id) {
     try {
       const user_id = id;
-      console.log("add med userid", user_id);
       const response = db.none(
-        `INSERT INTO medlist_id${id} (classname, drugname, strength, quantity, frequency, time, comments)
-                                        VALUES ($1, $2, $3, $4, $5, $6, $7);`,
+        `INSERT INTO medlist_id${id} (classname, drugname, strength, quantity, frequency, time, comments, formulation)
+                                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
         [
           this.classname,
           this.drugname,
@@ -35,7 +36,33 @@ class MedList {
           this.quantity,
           this.frequency,
           this.timing,
-          this.comments
+          this.comments,
+          this.formulation
+        ]
+      );
+      return "success";
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async updateMed(id) {
+    try {
+      const user_id = id;
+      console.log("update med userid", user_id);
+      const response = db.one(
+        `UPDATE medlist_id${id} (classname, drugname, strength, quantity, frequency, time, comments, formulation)
+                                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                                        WHERE classname=$1;`,
+        [
+          this.classname,
+          this.drugname,
+          this.strength,
+          this.quantity,
+          this.frequency,
+          this.timing,
+          this.comments,
+          this.formulation
         ]
       );
       return "success";
@@ -51,19 +78,6 @@ class MedList {
       return response;
     } catch (error) {
       return error.message;
-    }
-  }
-
-  static async getPostById(id) {
-    try {
-      const response = await db.one(
-        `SELECT * FROM posts 
-                                        WHERE id = $1; `,
-        [id]
-      );
-      return response;
-    } catch (err) {
-      return err.message;
     }
   }
 }

@@ -46,7 +46,8 @@ class User {
               quantity VARCHAR,
               frequency VARCHAR,
               time VARCHAR,
-              comments VARCHAR
+              comments VARCHAR,
+              formulation VARCHAR
           );`
       );
       return "success";
