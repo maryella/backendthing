@@ -21,7 +21,8 @@ router.post("/addmed", withAuth, async (req, res) => {
     frequency,
     timing,
     comments,
-    formulation
+    formulation,
+    update_route
   } = req.body;
 
   const new_med = new medModel(
@@ -33,7 +34,8 @@ router.post("/addmed", withAuth, async (req, res) => {
     frequency,
     timing,
     comments,
-    formulation
+    formulation,
+    update_route
   );
   const addedMed = await new_med.addMed(user_id);
 
@@ -45,7 +47,7 @@ router.post("/addmed", withAuth, async (req, res) => {
   }
 });
 
-router.post("/updatemed", withAuth, async (req, res) => {
+router.post("/update", withAuth, async (req, res) => {
   const user_id = req.user_id;
   console.log("post route user id", user_id);
   const {

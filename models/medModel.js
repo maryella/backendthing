@@ -10,7 +10,8 @@ class MedList {
     frequency,
     timing,
     comments,
-    formulation
+    formulation,
+    update_route
   ) {
     this.user_id = user_id;
     this.classname = classname;
@@ -21,14 +22,15 @@ class MedList {
     this.timing = timing;
     this.comments = comments;
     this.formulation = formulation;
+    this.update_route = update_route;
   }
 
   async addMed(id) {
     try {
       const user_id = id;
       const response = db.none(
-        `INSERT INTO medlist_id${id} (classname, drugname, strength, quantity, frequency, time, comments, formulation)
-                                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
+        `INSERT INTO medlist_id${id} (classname, drugname, strength, quantity, frequency, time, comments, formulation, category)
+                                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
         [
           this.classname,
           this.drugname,
@@ -37,7 +39,8 @@ class MedList {
           this.frequency,
           this.timing,
           this.comments,
-          this.formulation
+          this.formulation,
+          this.update_route
         ]
       );
       return "success";
@@ -50,10 +53,11 @@ class MedList {
     try {
       const user_id = id;
       console.log("update med userid", user_id);
-      const response = db.one(
-        `UPDATE medlist_id${id} (classname, drugname, strength, quantity, frequency, time, comments, formulation)
-                                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-                                        WHERE classname=$1;`,
+      const response = db.none(
+        `UPDATE medlist_id${id} set drugname=$2, strength=$3, quantity=$4, frequency=$5, time=$6, comments=$7, formulation=$8
+ 
+      WHERE classname=$1
+                                        ;`,
         [
           this.classname,
           this.drugname,

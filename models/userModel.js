@@ -47,7 +47,8 @@ class User {
               frequency VARCHAR,
               time VARCHAR,
               comments VARCHAR,
-              formulation VARCHAR
+              formulation VARCHAR,
+              updateroute VARCHAR
           );`
       );
       return "success";
