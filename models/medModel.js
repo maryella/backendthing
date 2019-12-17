@@ -29,7 +29,7 @@ class MedList {
     try {
       const user_id = id;
       const response = db.none(
-        `INSERT INTO medlist_id${id} (classname, drugname, strength, quantity, frequency, time, comments, formulation, category)
+        `INSERT INTO medlist_id${id} (classname, drugname, strength, quantity, frequency, time, comments, formulation, updateroute)
                                         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
         [
           this.classname,
