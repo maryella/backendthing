@@ -5,7 +5,6 @@ const withAuth = require("../middleware");
 
 router.get("/", withAuth, async function(req, res, next) {
   const user_id = req.user_id;
-  console.log("get route user id", user_id);
   const all = await medModel.getAllMeds(user_id);
   res.json(all);
 });
@@ -38,9 +37,8 @@ router.post("/addmed", withAuth, async (req, res) => {
     update_route
   );
   const addedMed = await new_med.addMed(user_id);
-
+  console.log("added med", addedMed);
   if (addedMed) {
-    console.log("added med");
     res.sendStatus(200);
   } else {
     res.sendStatus(500);

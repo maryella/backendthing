@@ -11,6 +11,11 @@ const options = {
   password: process.env.DB_PASSWORD
 };
 
+// const options = {
+//   host: "localhost",
+//   database: "hearts"
+// };
+
 const db = pgp(options);
 
 module.exports = db;

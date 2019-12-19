@@ -43,7 +43,7 @@ class MedList {
           this.update_route
         ]
       );
-      return "success";
+      return response;
     } catch (error) {
       return error.message;
     }
@@ -69,7 +69,7 @@ class MedList {
           this.formulation
         ]
       );
-      return "success";
+      return response;
     } catch (error) {
       return error.message;
     }
